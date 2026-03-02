@@ -1,8 +1,8 @@
 import random
 
-testw1 = False
-w1e1 = True
-w1e2 = True
+testw1 = True
+w1e1 = False
+w1e2 = False
 #######
 # BST #
 #######
@@ -121,17 +121,17 @@ class RBNode:
         l = self.left
         self.left = l.right
 
-        if (l.left):
-            self.l.parent = self
+        if (self.left):
+            self.left.parent = self
         l.parent = self.parent
 
         if(not self.parent):
             self.root = l
-        elif (self.value == self.parent.left):
+        elif (self.is_left_child()):
             self.parent.left = l
         else:
             self.parent.right = l
-        l.right = self.value
+        l.right = self
         self.parent = l            
 
     def rotate_left(self):
@@ -260,7 +260,7 @@ class RBTree:
                     grand_parent_pt.colour = t
                     node = parent_pt   
 
-            self.root.make_black()                
+        self.root.make_black()                
         
     def __str__(self):
         if self.is_empty():
@@ -284,7 +284,7 @@ def create_multiple_random_lists(amount_of_lists, max_value, length):
 
 if (testw1):
     tree = RBTree()
-    L = [10,8,10,15,30]
+    L = [10,8,1000,15,30,45,70,3,9,12,8,792]
     for n in L:
         tree.insert(n)
         print(tree.__str__())
@@ -296,7 +296,7 @@ if (testw1):
 runs = 100
 if w1e1:
     for _ in range(1):
-        list_gen = [16899205, 1605170, 12694540, 5203238]
+        list_gen = create_random_list(1000,80)
         RBTree_gen = RBTree()
 
         for i in list_gen:
