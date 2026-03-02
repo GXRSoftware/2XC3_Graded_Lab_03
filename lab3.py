@@ -130,10 +130,44 @@ class RBTree:
     def fix(self, node):
         if node.parent == None:
             node.make_black()
+
+        parent_pt = None
+        grand_parent_pt = None
+
         while node != None and node.parent != None and node.parent.is_red(): 
-            # to do 
-            self.root.make_black()
-                    
+
+            parent_pt = node.parent
+            grand_parent_pt = node.parent.parent
+
+
+
+            if (None):
+                # CASE A    
+
+                continue
+            else:
+                # CASE B
+                uncle_pt = grand_parent_pt.get_uncle()
+
+                # Case 1
+                if uncle_pt != None and uncle_pt.colour == "R":
+                    grand_parent_pt.colour = 1
+                    parent_pt.colour = 0
+                    uncle_pt.colour = 0
+                    node = grand_parent_pt
+                else:
+                    # Case 2
+                    if node == parent_pt.left:
+                        parent_pt.rotate_right()
+                        node = parent_pt
+                        parent_pt = node.parent
+
+                # Case 3
+                grand_parent_pt.rotate_left()
+                t = parent_pt.colour
+                parent_pt.colour = grand_parent_pt.colour
+                grand_parent_pt.colour = t
+                node = parent_pt                    
         
     def __str__(self):
         if self.is_empty():
