@@ -114,7 +114,6 @@ class RBTree:
                 self.__insert(node.right, value)
 
     def fix(self, node):
-        #You may alter code in this method if you wish, it's merely a guide.
         if node.parent == None:
             node.make_black()
         while node != None and node.parent != None and node.parent.is_red(): 
