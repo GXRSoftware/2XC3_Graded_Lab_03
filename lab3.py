@@ -171,13 +171,13 @@ class RBTree:
                     
             else:
                 # CASE B
-                uncle_pt = grand_parent_pt.get_uncle()
+                uncle_pt = grand_parent_pt.left
 
                 # Case 1
                 if uncle_pt != None and uncle_pt.colour == "R":
-                    grand_parent_pt.colour = 1
-                    parent_pt.colour = 0
-                    uncle_pt.colour = 0
+                    grand_parent_pt.colour = "R"
+                    parent_pt.colour = "B"
+                    uncle_pt.colour = "B"
                     node = grand_parent_pt
                 else:
                     # Case 2
@@ -186,12 +186,12 @@ class RBTree:
                         node = parent_pt
                         parent_pt = node.parent
 
-                # Case 3
-                grand_parent_pt.rotate_left()
-                t = parent_pt.colour
-                parent_pt.colour = grand_parent_pt.colour
-                grand_parent_pt.colour = t
-                node = parent_pt                    
+                    # Case 3
+                    grand_parent_pt.rotate_left()
+                    t = parent_pt.colour
+                    parent_pt.colour = grand_parent_pt.colour
+                    grand_parent_pt.colour = t
+                    node = parent_pt                    
         
     def __str__(self):
         if self.is_empty():
@@ -210,7 +210,9 @@ class RBTree:
 tree = RBTree()
 tree.insert(10)
 tree.insert(8)
-tree.insert(10)
 tree.insert(15)
 tree.insert(30)
 
+
+
+print(tree.__str__())
