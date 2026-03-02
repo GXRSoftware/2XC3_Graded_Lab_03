@@ -8,7 +8,7 @@ class RBNode:
         self.colour = "R"
 
     def get_uncle(self):
-        return
+        return 
 
     def is_leaf(self):
         return self.left == None and self.right == None
@@ -54,7 +54,21 @@ class RBNode:
         #TODO
 
     def rotate_left(self):
-        #TODO
+        right = self.right
+        self.right = right.left
+
+        if (self.right):
+            self.right.parent = self
+        right.parent = self.parent
+
+        if (not self.parent): self.root = right
+
+        elif (self.is_left_child()): self.parent.left = right
+        
+        else: self.parent.right = right
+
+        right.left = self
+        self.parent = right
 
 
 
