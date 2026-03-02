@@ -51,11 +51,24 @@ class RBNode:
          return "(" + str(self.value) + "," + self.colour + ")"
 
     def rotate_right(self):
-        #TODO
+        l = self.left
+        self.left = l.right
+
+        if (l.left):
+            self.l.parent = self
+        l.parent = self.parent
+
+        if(not self.parent):
+            self.root = l
+        elif (self.value == self.parent.left):
+            self.parent.left = l
+        else:
+            self.parent.right = l
+        l.right = self.value
+        self.parent = l            
 
     def rotate_left(self):
-        #TODO
-
+        return self
 
 
 class RBTree:
@@ -104,8 +117,8 @@ class RBTree:
         if node.parent == None:
             node.make_black()
         while node != None and node.parent != None and node.parent.is_red(): 
-            #TODO
-        self.root.make_black()
+            # to do 
+            self.root.make_black()
                     
         
     def __str__(self):
@@ -121,3 +134,11 @@ class RBTree:
         if node.right == None:
             return "[" +  self.__str_helper(node.left) + " <- " + str(node) + "]"
         return "[" + self.__str_helper(node.left) + " <- " + str(node) + " -> " + self.__str_helper(node.right) + "]"
+
+tree = RBTree()
+tree.insert(10)
+tree.insert(8)
+tree.insert(10)
+tree.insert(15)
+tree.insert(30)
+
