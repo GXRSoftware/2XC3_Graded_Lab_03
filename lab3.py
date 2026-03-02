@@ -1,3 +1,7 @@
+testw1 = False
+w1e1 = True
+w1e2 = True
+
 class RBNode:
 
     def __init__(self, value):
@@ -141,14 +145,14 @@ class RBTree:
             # Case A:
             # Node's parent is the left child of its grand parent
             if (parent_pt == grand_parent_pt):
-                u_node = grand_parent_pt.right
+                uncle_pt = grand_parent_pt.right
                 
                 # Case 1 
                 # The uncle of node is also red
-                if (u_node != None and u_node.colour == "R"):
+                if (uncle_pt != None and uncle_pt.colour == "R"):
                     grand_parent_pt.colour = "R"
                     parent_pt.colour = "B"
-                    u_node.colour = "B"
+                    uncle_pt.colour = "B"
                     node = grand_parent_pt
                 
                 else:
@@ -186,12 +190,14 @@ class RBTree:
                         node = parent_pt
                         parent_pt = node.parent
 
-                # Case 3
-                grand_parent_pt.rotate_left()
-                t = parent_pt.colour
-                parent_pt.colour = grand_parent_pt.colour
-                grand_parent_pt.colour = t
-                node = parent_pt                    
+                    # Case 3
+                    grand_parent_pt.rotate_left()
+                    t = parent_pt.colour
+                    parent_pt.colour = grand_parent_pt.colour
+                    grand_parent_pt.colour = t
+                    node = parent_pt   
+
+            self.root.make_black()                
         
     def __str__(self):
         if self.is_empty():
@@ -207,10 +213,26 @@ class RBTree:
             return "[" +  self.__str_helper(node.left) + " <- " + str(node) + "]"
         return "[" + self.__str_helper(node.left) + " <- " + str(node) + " -> " + self.__str_helper(node.right) + "]"
 
-tree = RBTree()
-tree.insert(10)
-tree.insert(8)
-tree.insert(10)
-tree.insert(15)
-tree.insert(30)
-print(tree.__str__())
+if (testw1):
+    tree = RBTree()
+    L = [10,8,10,15,30]
+    for n in L:
+        tree.insert(n)
+        print(tree.__str__())
+
+
+################
+# Experiment 1 #
+################
+if w1e1:
+    print("ex1")
+
+
+
+
+
+################
+# Experiment 2 #
+################
+if w1e2:
+    print("ex2")
