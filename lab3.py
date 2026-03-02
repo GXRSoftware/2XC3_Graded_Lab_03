@@ -1,7 +1,68 @@
 testw1 = False
 w1e1 = True
 w1e2 = True
+#######
+# BST #
+#######
+from dataclasses import dataclass
+from typing import Optional, List
 
+class Node:
+    key: int
+    left: Optional["Node"] = None
+    right: Optional["Node"] = None
+
+def bst_insert(root: Optional[Node], key: int) -> Node:
+    """Insert key into BST (ignores duplicates). Returns the root."""
+    if root is None:
+        return Node(key)
+
+    cur = root
+    while True:
+        if key == cur.key:
+            return root  # ignore duplicate
+        elif key < cur.key:
+            if cur.left is None:
+                cur.left = Node(key)
+                return root
+            cur = cur.left
+        else:
+            if cur.right is None:
+                cur.right = Node(key)
+                return root
+            cur = cur.right
+
+def height(node: Optional[Node]) -> int:
+    """
+    Height in edges:
+    - empty tree = -1
+    - single node = 0
+    """
+    if node is None:
+        return -1
+    return 1 + max(height(node.left), height(node.right))
+
+def left_rotate(x: Optional[Node]) -> Optional[Node]:
+    if x is None or x.right is None:
+        return x
+    y = x.right
+    T2 = y.left
+    y.left = x
+    x.right = T2
+    return y
+
+def right_rotate(y: Optional[Node]) -> Optional[Node]:
+    if y is None or y.left is None:
+        return y
+    x = y.left
+    T2 = x.right
+    x.right = y
+    y.left = T2
+    return x
+
+#######
+# RBT #
+#######
 class RBNode:
 
     def __init__(self, value):
