@@ -1,6 +1,6 @@
 import random
 
-testw1 = True
+testw1 = False
 w1e1 = True
 w1e2 = True
 #######
@@ -293,8 +293,20 @@ if (testw1):
 ################
 # Experiment 1 #
 ################
+runs = 100
 if w1e1:
-    print("ex1")
+    for _ in range(1):
+        list_gen = [16899205, 1605170, 12694540, 5203238]
+        RBTree_gen = RBTree()
+
+        for i in list_gen:
+            RBTree_gen.insert(i)
+            print(RBTree_gen.__str__())
+
+    try:
+        print(RBTree_gen.get_height())
+    except:
+        print("FAIL")
 
 ################
 # Experiment 2 #
