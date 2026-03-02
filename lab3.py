@@ -1,3 +1,5 @@
+import random
+
 testw1 = True
 w1e1 = True
 w1e2 = True
@@ -212,6 +214,12 @@ class RBTree:
         if node.right == None:
             return "[" +  self.__str_helper(node.left) + " <- " + str(node) + "]"
         return "[" + self.__str_helper(node.left) + " <- " + str(node) + " -> " + self.__str_helper(node.right) + "]"
+    
+def create_random_list(length, max_value):
+    return [random.randint(0, max_value) for _ in range(length)]
+
+def create_multiple_random_lists(amount_of_lists, max_value, length):
+    return [create_random_list(length, max_value) for _ in range(amount_of_lists)]
 
 if (testw1):
     tree = RBTree()
