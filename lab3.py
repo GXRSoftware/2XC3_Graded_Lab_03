@@ -135,16 +135,40 @@ class RBTree:
         grand_parent_pt = None
 
         while node != None and node.parent != None and node.parent.is_red(): 
-
             parent_pt = node.parent
             grand_parent_pt = node.parent.parent
+            
+            # Case A:
+            # Node's parent is the left child of its grand parent
+            if (parent_pt == grand_parent_pt):
+                u_node = grand_parent_pt.right
+                
+                # Case 1 
+                # The uncle of node is also red
+                if (u_node != None and u_node.colour == "R"):
+                    grand_parent_pt.colour = "R"
+                    parent_pt.colour = "B"
+                    u_node.colour = "B"
+                    node = grand_parent_pt
+                
+                else:
+                    # Case 2
+                    # Node is the right child of its parent
+                    # We need to rotate left
+                    if (node == parent_pt.right):
+                        parent_pt.left_rotate()
+                        node = parent_pt
+                        parent_pt = node.parent
 
-
-
-            if (None):
-                # CASE A    
-
-                continue
+                    # Case 3
+                    # Node is the left child of its parent
+                    # We need to rotate right
+                    grand_parent_pt.right_rotate()
+                    c = parent_pt.colour
+                    parent_pt.colour = grand_parent_pt.colour
+                    grand_parent_pt.colour = c
+                    node = parent_pt
+                    
             else:
                 # CASE B
                 uncle_pt = grand_parent_pt.get_uncle()
