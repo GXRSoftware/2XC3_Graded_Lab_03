@@ -1,29 +1,28 @@
 import random
 
-testw1 = True
+testw1 = False
 w1e1 = False
-w1e2 = False
+w1e2 = True
 #######
 # BST #
 #######
 from dataclasses import dataclass
 from typing import Optional, List
 
+@dataclass
 class Node:
     key: int
     left: Optional["Node"] = None
     right: Optional["Node"] = None
 
 def bst_insert(root: Optional[Node], key: int) -> Node:
-    """Insert key into BST (ignores duplicates). Returns the root."""
+    """Insert key into BST. Duplicates are handled on the right. Returns the root."""
     if root is None:
         return Node(key)
 
     cur = root
     while True:
-        if key == cur.key:
-            return root  # ignore duplicate
-        elif key < cur.key:
+        if key < cur.key:
             if cur.left is None:
                 cur.left = Node(key)
                 return root
@@ -74,9 +73,6 @@ class RBNode:
         self.parent = None
         self.colour = "R"
 
-    def get_uncle(self):
-        return 
-
     def is_leaf(self):
         return self.left == None and self.right == None
 
@@ -119,39 +115,39 @@ class RBNode:
 
     def rotate_right(self):
         l = self.left
+        if not l: return
         self.left = l.right
 
         if (self.left):
             self.left.parent = self
         l.parent = self.parent
 
-        if(not self.parent):
-            self.root = l
-        elif (self.is_left_child()):
-            self.parent.left = l
-        else:
-            self.parent.right = l
+        if (self.parent):
+            if (self.is_left_child()):
+                self.parent.left = l
+            else:
+                self.parent.right = l
+
         l.right = self
         self.parent = l            
 
     def rotate_left(self):
-        right = self.right
-        self.right = right.left
+        r = self.right
+        if not r: return
+        self.right = r.left
 
         if (self.right):
             self.right.parent = self
-        right.parent = self.parent
+        r.parent = self.parent
 
-        if (not self.parent): self.root = right
+        if (self.parent): 
+            if (self.is_left_child()): 
+                self.parent.left = r   
+            else: 
+                self.parent.right = r
 
-        elif (self.is_left_child()): self.parent.left = right
-        
-        else: self.parent.right = right
-
-        right.left = self
-        self.parent = right
-
-
+        r.left = self
+        self.parent = r
 
 class RBTree:
 
@@ -201,21 +197,23 @@ class RBTree:
         parent_pt = None
         grand_parent_pt = None
 
-        while node != None and node.parent != None and node.parent.is_red(): 
+        while node and node.parent and node.parent.is_red(): 
             parent_pt = node.parent
-            grand_parent_pt = node.parent.parent
+            grand_parent_pt = parent_pt.parent
+
+            if grand_parent_pt is None: break
             
             # Case A:
             # Node's parent is the left child of its grand parent
-            if (parent_pt == grand_parent_pt):
+            if (parent_pt == grand_parent_pt.left):
                 uncle_pt = grand_parent_pt.right
                 
                 # Case 1 
                 # The uncle of node is also red
-                if (uncle_pt != None and uncle_pt.colour == "R"):
-                    grand_parent_pt.colour = "R"
-                    parent_pt.colour = "B"
-                    uncle_pt.colour = "B"
+                if (uncle_pt and uncle_pt.is_red()):
+                    grand_parent_pt.make_red()
+                    parent_pt.make_black()
+                    uncle_pt.make_black()
                     node = grand_parent_pt
                 
                 else:
@@ -223,43 +221,47 @@ class RBTree:
                     # Node is the right child of its parent
                     # We need to rotate left
                     if (node == parent_pt.right):
-                        parent_pt.left_rotate()
                         node = parent_pt
+                        node.rotate_left()
                         parent_pt = node.parent
 
                     # Case 3
                     # Node is the left child of its parent
                     # We need to rotate right
-                    grand_parent_pt.right_rotate()
-                    c = parent_pt.colour
-                    parent_pt.colour = grand_parent_pt.colour
-                    grand_parent_pt.colour = c
-                    node = parent_pt
+                    parent_pt.make_black()
+                    grand_parent_pt.make_red()
+                    grand_parent_pt.rotate_right()
                     
             else:
                 # CASE B
+                # The parent of the node is the right child
                 uncle_pt = grand_parent_pt.left
 
                 # Case 1
-                if uncle_pt != None and uncle_pt.colour == "R":
-                    grand_parent_pt.colour = "R"
-                    parent_pt.colour = "B"
-                    uncle_pt.colour = "B"
+                # The uncle of the node is red
+                if uncle_pt and uncle_pt.is_red():
+                    grand_parent_pt.make_red()
+                    parent_pt.make_black()
+                    uncle_pt.make_black()
                     node = grand_parent_pt
                 else:
                     # Case 2
+                    # The node is the left child
                     if node == parent_pt.left:
-                        parent_pt.rotate_right()
                         node = parent_pt
+                        node.rotate_right()
                         parent_pt = node.parent
 
                     # Case 3
+                    # The node is the right child
+                    parent_pt.make_black()
+                    grand_parent_pt.make_red()
                     grand_parent_pt.rotate_left()
-                    t = parent_pt.colour
-                    parent_pt.colour = grand_parent_pt.colour
-                    grand_parent_pt.colour = t
-                    node = parent_pt   
 
+        temp = node
+        while temp.parent is not None:
+            temp = temp.parent
+        self.root = temp
         self.root.make_black()                
         
     def __str__(self):
@@ -282,6 +284,18 @@ def create_random_list(length, max_value):
 def create_multiple_random_lists(amount_of_lists, max_value, length):
     return [create_random_list(length, max_value) for _ in range(amount_of_lists)]
 
+def create_near_sorted_list(length, max_value, swaps):
+    L = create_random_list(length, max_value)
+    L.sort()
+    for _ in range(swaps):
+        r1 = random.randint(0, length - 1)
+        r2 = random.randint(0, length - 1)
+        swap(L, r1, r2)
+    return L
+
+def swap(L, i, j):
+    L[i], L[j] = L[j], L[i]
+
 if (testw1):
     tree = RBTree()
     L = [10,8,1000,15,30,45,70,3,9,12,8,792]
@@ -289,6 +303,14 @@ if (testw1):
         tree.insert(n)
         print(tree.__str__())
 
+###############
+# Experiments #
+###############
+import matplotlib
+import random
+import timeit
+import matplotlib.pyplot as plt
+import numpy as np
 
 ################
 # Experiment 1 #
@@ -311,5 +333,44 @@ if w1e1:
 ################
 # Experiment 2 #
 ################
+import sys
+sys.setrecursionlimit(30000)
 if w1e2:
-    print("ex2")
+    runs = 100
+    length = 10000
+    max_value = 100000
+    swaps = [0] + [2**x for x in range(14)]
+    avg_height_RBT = [0] * len(swaps)
+    avg_height_BST = [0] * len(swaps)
+
+    track = -1
+    for s in swaps:
+        track += 1
+        for i in range(runs):
+            L = create_near_sorted_list(length, max_value, s)
+
+            RBT = RBTree()
+            BST = None
+
+            for e in L:
+                RBT.insert(e)
+                BST = bst_insert(BST, e)
+
+            avg_height_BST[track] += height(BST)
+            avg_height_RBT[track] += RBT.get_height()
+        
+        print(s)
+        avg_height_BST[track] /= runs
+        avg_height_RBT[track] /= runs
+
+    plt.plot(swaps, avg_height_RBT, color="red", label="RBT")
+    plt.plot(swaps, avg_height_BST, color="black", label="BST")
+    plt.title("RBT vs BST Height on Near-Sorted Inserts")
+    plt.xlabel('Number of Swaps')
+    plt.ylabel('Height')
+    current_ticks = [t for t in plt.yticks()[0] if t > 0]
+    plt.yticks(current_ticks + [avg_height_RBT[0]])
+    plt.legend()
+    plt.savefig('Ex2_RBT_BST_Swaps.png')
+
+            
