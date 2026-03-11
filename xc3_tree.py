@@ -22,6 +22,11 @@ class Node:
 class XC3Tree:
     def __init__(self, deg):
         self._root = XC3Tree._build_tree(deg)
+        self._deg = deg
+
+    @property
+    def deg(self):
+        return self._deg
 
     @classmethod
     def _build_tree(cls, deg):
