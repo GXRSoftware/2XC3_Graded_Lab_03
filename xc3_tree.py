@@ -1,5 +1,5 @@
 
-class Node:
+class Node: #LOOK HERE
     def __init__(self, deg):
         self._children = []
         self._deg = deg
@@ -19,7 +19,7 @@ class Node:
     def add_child(self, new_child):
         self._children.append(new_child)
 
-class XC3Tree:
+class XC3Tree: #LOOK HERE
     def __init__(self, deg):
         self._root = XC3Tree._build_tree(deg)
         self._deg = deg

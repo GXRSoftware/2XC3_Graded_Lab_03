@@ -373,4 +373,20 @@ if w1e2:
     plt.legend()
     plt.savefig('Ex2_RBT_BST_Swaps.png')
 
-            
+
+from xc3_tree import XC3Tree
+################
+# Experiment 3 #
+################
+def experiment3(): #LOOK HERE
+    for i in range(26): 
+        print(f"An XC3 Tree of {i} deg has height: {XC3Tree(i).height}")
+
+
+################
+# Experiment 4 #
+################
+def experiment4(): #LOOK HERE
+    for i in range(26): 
+        print(f"An XC3 Tree of {i} deg has {XC3Tree(i).nodes_num} nodes")
+
