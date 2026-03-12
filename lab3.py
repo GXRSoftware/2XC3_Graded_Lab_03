@@ -2,7 +2,9 @@ import random
 
 testw1 = False
 w1e1 = False
-w1e2 = True
+w1e2 = False
+w2e3 = True
+w2e4 = True
 #######
 # BST #
 #######
@@ -113,41 +115,53 @@ class RBNode:
     def __repr__(self):
          return "(" + str(self.value) + "," + self.colour + ")"
 
-    def rotate_right(self):
+    def rotate_right(self): 
         l = self.left
         if not l: return
         self.left = l.right
 
-        if (self.left):
+        # If the node has a left child
+        # Make the left node the parent of the node
+        if (self.left):                     #LOOK HERE
             self.left.parent = self
         l.parent = self.parent
 
-        if (self.parent):
-            if (self.is_left_child()):
+        # If the node has a parent
+        # Swap so that the parent has the new higher node (l) node
+        # Accounting for whether node is the left or right child
+        if (self.parent):                   #LOOK HERE
+            if (self.is_left_child()):      #LOOK HERE
                 self.parent.left = l
-            else:
+            else:                           #LOOK HERE
                 self.parent.right = l
 
-        l.right = self
-        self.parent = l            
+        # Fix the relation to the left node (l)
+        l.right = self                      #LOOK HERE
+        self.parent = l                     #LOOK HERE
 
     def rotate_left(self):
         r = self.right
         if not r: return
         self.right = r.left
 
-        if (self.right):
+        # If the node has a right child
+        # Make the right node the parent of the node
+        if (self.right):                    #LOOK HERE
             self.right.parent = self
         r.parent = self.parent
 
-        if (self.parent): 
-            if (self.is_left_child()): 
+        # If the node has a parent
+        # Swap so that the parent has the new higher node (r) node
+        # Accounting for whether node is the left or right child
+        if (self.parent):                   #LOOK HERE
+            if (self.is_left_child()):      #LOOK HERE
                 self.parent.left = r   
-            else: 
+            else:                           #LOOK HERE
                 self.parent.right = r
 
-        r.left = self
-        self.parent = r
+        # Fix the relation to the right node (r)
+        r.left = self                       #LOOK HERE
+        self.parent = r                     #LOOK HERE
 
 class RBTree:
 
@@ -382,6 +396,8 @@ def experiment3(): #LOOK HERE
     for i in range(26): 
         print(f"An XC3 Tree of {i} deg has height: {XC3Tree(i).height}")
 
+if w2e3:
+    experiment3()
 
 ################
 # Experiment 4 #
@@ -390,3 +406,5 @@ def experiment4(): #LOOK HERE
     for i in range(26): 
         print(f"An XC3 Tree of {i} deg has {XC3Tree(i).nodes_num} nodes")
 
+if w2e4:
+    experiment4()

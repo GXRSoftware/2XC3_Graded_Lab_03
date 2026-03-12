@@ -1,4 +1,3 @@
-
 class Node: #LOOK HERE
     def __init__(self, deg):
         self._children = []
