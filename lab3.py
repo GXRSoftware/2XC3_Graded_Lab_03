@@ -1,8 +1,8 @@
 import random
 
 testw1 = False
-w1e1 = False
-w1e2 = True
+w1e1 = True
+w1e2 = False
 #######
 # BST #
 #######
@@ -316,19 +316,24 @@ import numpy as np
 # Experiment 1 #
 ################
 runs = 100
+
 if w1e1:
-    for _ in range(1):
+    RB_height = 0
+    BSTHeight = 0
+
+    for _ in range(runs):
         list_gen = create_random_list(1000,80)
         RBTree_gen = RBTree()
+        BSTTree = None
 
         for i in list_gen:
             RBTree_gen.insert(i)
-            print(RBTree_gen.__str__())
+            BSTTree = bst_insert(BSTTree, i)
 
-    try:
-        print(RBTree_gen.get_height())
-    except:
-        print("FAIL")
+        RB_height += RBTree_gen.get_height()
+        BSTHeight += height(BSTTree)
+
+    print(RB_height / runs, BSTHeight / runs)
 
 ################
 # Experiment 2 #
